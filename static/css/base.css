@@ -22,7 +22,6 @@ html {
 body {
     font-family: 'Quicksand', sans-serif;
     color: var(--color-main);
-    background-color: #152c35;
 }
 /* Text color styles */
 .txt-darkblue {
