@@ -63,6 +63,101 @@ body {
 .clr-pink {
     background-color: var(--color-light-pink);
 }
+/* Heading styles */
+.font-heading {
+    font-family: var(--font-headings);
+    font-weight: 600;
+}
+
+.heading-green {
+    background-color: var(--color-light-green);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(50%, transparent), color-stop(50%, var(--color-light-green)), color-stop(90%, var(--color-light-green)), color-stop(0, transparent));
+    background: -o-linear-gradient(transparent 50%, var(--color-light-green) 50%, var(--color-light-green) 90%, transparent 0);
+    background: linear-gradient(transparent 50%, var(--color-light-green) 50%, var(--color-light-green) 90%, transparent 0);
+}
+
+
+.heading-pink {
+    background-color: var(--color-light-pink);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(50%, transparent), color-stop(50%, var(--color-light-pink)), color-stop(90%, var(--color-light-pink)), color-stop(0, transparent));
+    background: -o-linear-gradient(transparent 50%, var(--color-light-pink) 50%, var(--color-light-pink) 90%, transparent 0);
+    background: linear-gradient(transparent 50%, var(--color-light-pink) 50%, var(--color-light-pink) 90%, transparent 0);
+}
+
+.heading-steel {
+    background-color: var(--color-light-steel);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(50%, transparent), color-stop(50%, var(--color-light-steel)), color-stop(90%, var(--color-light-steel)), color-stop(0, transparent));
+    background: -o-linear-gradient(transparent 50%, var(--color-light-steel) 50%, var(--color-light-steel) 90%, transparent 0);
+    background: linear-gradient(transparent 50%, var(--color-light-steel) 50%, var(--color-light-steel) 90%, transparent 0);
+}
+
+
+.font-accent {
+    font-family: var(--font-accent);
+}
+/* Buttons */
+.button {
+    display: inline-block;
+    line-height: 1.5;
+    color: var(--color-main);
+    text-align: center;
+    text-decoration: none;
+    vertical-align: middle;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+        user-select: none;
+    background-color: transparent;
+    border: 3px solid transparent;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    text-transform: uppercase;
+}
+
+
+.button:focus {
+    outline: none;
+}
+
+.button:hover {
+    color: var(--color-main);
+}
+
+.button-disabled {
+    cursor: not-allowed;
+    color: var(--color-steel);
+    border-color: var(--color-light-steel);
+}
+
+.button-disabled:hover {
+    background-color: transparent;
+    color: var(--color-steel);
+}
+
+.button-green {
+    border-color: var(--color-light-green)
+}
+
+.button-green:hover {
+    background-color: var(--color-light-green);
+}
+
+.button-steel {
+    border-color: var(--color-light-steel)
+}
+
+.button-steel:hover {
+    background-color: var(--color-light-steel);
+}
+
+.button-pink {
+    border-color: var(--color-light-pink)
+}
+
+.button-pink:hover {
+    background-color: var(--color-light-pink);
+}
 
 /* ---------- HEADER ---------- */
 
@@ -120,6 +215,104 @@ ul.dropdown-menu.show {
     color: var(--color-main);
 }
 
+/* mobile collapse header styles */
+
+/* creating the hover and active effect */
+.navbar-nav a.nav-link.active, .navbar-nav a.nav-link:hover {
+    background-color: var(--color-light-pink);
+    background: -webkit-gradient(linear, left top, left bottom, from(var(--color-light-steel)), color-stop(50%, var(--color-light-steel)), color-stop(50%, var(--color-light-pink)), color-stop(80%, var(--color-light-pink)), color-stop(0, var(--color-light-steel)));
+    background: -o-linear-gradient(var(--color-light-steel), var(--color-light-steel) 50%, var(--color-light-pink) 50%, var(--color-light-pink) 80%, var(--color-light-steel) 0);
+    background: linear-gradient(var(--color-light-steel), var(--color-light-steel) 50%, var(--color-light-pink) 50%, var(--color-light-pink) 80%, var(--color-light-steel) 0);
+}
+
+/* Offsetting navbar height for collapsable search bar */
+.collapsed-search {
+    margin-top: 5rem;
+    margin-bottom: -5rem;
+}
+
+/* collapse search element style */
+.search-nav {
+    background-color: var(--color-light-steel);
+    padding: 0.5rem 0;
+}
+
+.search-nav input {
+    font-size: 0.75rem;
+    color: var(--color-main);
+}
+
+.search-nav input,
+.search-nav .form-control:focus {
+    border-color: var(--color-main);
+    background-color: var(--color-light-pink);
+}
+
+.search-nav input::-webkit-input-placeholder {
+    color: var(--color-main);
+    opacity: 1;
+}
+
+.search-nav input::-moz-placeholder {
+    color: var(--color-main);
+    opacity: 1;
+}
+
+.search-nav input:-ms-input-placeholder {
+    color: var(--color-main);
+    opacity: 1;
+}
+
+.search-nav input::-ms-input-placeholder {
+    color: var(--color-main);
+    opacity: 1;
+}
+
+.search-nav input::placeholder {
+    color: var(--color-main);
+    opacity: 1;
+}
+
+.search-nav button {
+    color: var(--color-main);
+    border-color: var(--color-light-pink);
+}
+
+.search-nav button:hover {
+    color: var(--color-main);
+    background-color: var(--color-light-pink);
+    border-color: var(--color-light-pink);
+}
+
+.search-nav .form-control:focus {
+    -webkit-box-shadow: 0 0 0 0.25rem var(--color-light-pink);
+            box-shadow: 0 0 0 0.25rem var(--color-light-pink);
+}
+
+/* item_count badge styles */
+.shopping-cart-icon {
+    position: relative;
+}
+
+span.badge.rounded-pill {
+    color: var(--color-main);
+    background-color: var(--color-light-pink);
+    font-size: 0.5rem;
+    height: 1rem;
+    width: auto;
+    position: absolute;
+    bottom: -0.5rem;
+    left: 1.5rem;
+}
+
+/* Hamburger menu styles */
+span.hamburger-inner,
+span.hamburger-inner::before,
+span.hamburger-inner::after,
+span.hamburger-inner {
+    width: 33px;
+    background-color: var(--color-main);
+}
 /* ---------- FOOTER ---------- */
 footer {
     line-height: 1.1;
