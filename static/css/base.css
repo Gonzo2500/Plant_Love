@@ -1,0 +1,165 @@
+/* Import fonts from Google fonts */
+@import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@400;600&family=Caveat:wght@400;600&family=Quicksand:wght@300;400;500;600&display=swap');
+
+
+/* ---------- COMMON STYLES ---------- */
+
+:root {
+    --color-main: #152c35;
+    --color-light-steel: #b3bcc9;
+    --color-light-pink: #e5dbdc;
+    --color-light-green: #a9c6c4;
+    --color-pink: #9e919a;
+    --color-steel: #75869b;
+    --color-green: #698b89;
+    --font-headings: 'Bodoni Moda', serif;
+    --font-accent: 'Caveat', cursive;
+}
+
+html {
+    height: 100%;
+}
+body {
+    font-family: 'Quicksand', sans-serif;
+    color: var(--color-main);
+    background-color: #152c35;
+}
+/* Text color styles */
+.txt-darkblue {
+    color: var(--color-main);
+}
+
+.txt-steel {
+    color: var(--color-steel);
+}
+
+.txt-green {
+    color: var(--color-green);
+}
+
+.txt-pink {
+    color: var(--color-pink);
+}
+
+.txt-small {
+    font-size: 0.8rem;
+}
+
+.txt-link {
+    color: var(--color-main);
+    text-decoration: none;
+    border-bottom: 2px solid var(--color-light-pink);
+}
+
+.txt-link:hover {
+    color: var(--color-main);
+    background-color: var(--color-light-pink);
+}
+
+.clr-steel {
+    background-color: var(--color-light-steel);
+}
+
+.clr-pink {
+    background-color: var(--color-light-pink);
+}
+
+/* ---------- HEADER ---------- */
+
+header {
+    margin-bottom: 5rem;
+}
+
+nav.navbar {
+    height: 4.25rem;
+}
+
+nav.navbar, .navbar-nav {
+    background-color: var(--color-light-steel);
+}
+
+nav.navbar li>a {
+    color: var(--color-main);
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+nav a.nav-link {
+    width: -webkit-fit-content;
+    width: -moz-fit-content;
+    width: fit-content;
+}
+
+/* Icon styles */
+.navbar-icons li a i {
+    border: 1px solid var(--color-light-pink);
+    padding: 0.3rem;
+}
+
+.navbar-icons li a i:hover {
+    background-color: var(--color-light-pink);
+}
+
+/* Removing Default arrow for account icon */
+.navbar .list-inline-item .dropdown-toggle::after {
+    display: none;
+}
+
+ul.dropdown-menu.show {
+    right: 0;
+    left: auto;
+}
+
+.navbar-toggler:focus {
+    -webkit-box-shadow: none;
+            box-shadow: none;
+}
+
+.navbar-brand:hover {
+    color: var(--color-main);
+}
+
+/* ---------- FOOTER ---------- */
+footer {
+    line-height: 1.1;
+}
+
+.footer-group p {
+    font-size: 0.9rem;
+}
+
+.footer-group li a {
+    font-size: 0.8rem;
+}
+
+
+.footer-group li a,
+footer .list-inline-item a,
+.logo,
+.logo:hover {
+    color: var(--color-main);
+    text-decoration: none;
+}
+
+.footer-group li a{
+    border-bottom: 1px solid var(--color-light-pink);
+}
+
+footer .list-inline-item {
+    height: 2.5rem;
+    width: 2.5rem;
+    text-align: center;
+    border: 1px solid var(--color-light-pink);
+}
+
+footer .list-inline-item a {
+    line-height: 2.5rem;
+}
+
+.footer-group li a:hover,
+footer .list-inline-item a:hover,
+footer .list-inline-item:hover {
+    background-color: var(--color-light-pink);
+}
+
