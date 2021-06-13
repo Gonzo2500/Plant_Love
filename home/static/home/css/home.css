@@ -1,0 +1,8 @@
+/* Hero image */
+.home-page {
+    height: 100vh;
+    background: url('/media/hero-img.jpg') no-repeat center top;
+    position: relative;
+    top: -3rem;
+    background-size: cover;
+}
