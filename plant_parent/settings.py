@@ -42,6 +42,9 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'home',
+    'products',
+     # colorfield in Products.Color model
+    'colorfield',
 ]
 
 MIDDLEWARE = [
