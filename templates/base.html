@@ -2,51 +2,199 @@
 
 <!doctype html>
 <html lang="en">
-  <head>
 
-    {% block meta %}
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    {% endblock %}
+<head>
 
-    {% block extra_meta %}
-    {% endblock %}
+  {% block meta %}
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="author" content="Maximilian Dazer">
+  <meta name="description" content="This is an e-commerce website selling plants and everything plant lovers need">
+  {% endblock %}
 
-    {% block corecss %}
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    {% endblock %}
+  {% block extra_meta %}
+  {% endblock %}
 
-    {% block extra_css %}
-    {% endblock %}
+  {% block corecss %}
+  <!-- Foundation framework css style -->
+  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+  <!-- Base css accross all pages -->
+  <link rel="stylesheet" href="{% static 'css/base.css' %}">
+  <!-- Hamburger animation used from jonsuh.com -->
+  <link href="{% static 'css/hamburger.min.css' %}" rel="stylesheet">
+  {% endblock %}
 
-    {% block corejs %}
-        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-    {% endblock %}
+  {% block extra_css %}
+  {% endblock %}
 
-    {% block extra_js %}
-    {% endblock %}
+  {% block corejs %}
+  <script src="https://kit.fontawesome.com/d6343cbdf9.js" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+    integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+  </script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+    integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
+  </script>
+  {% endblock %}
 
-    <title>Plant Parent {% block extra_title %}{% endblock %}</title>
-  </head>
-  <body>
-    <header class="container-fluid fixed-top"></header>
+  {% block extra_js %}
+  {% endblock %}
 
-    {% if messages %}
-        <div class="message-container"></div>
-    {% endif %}
+  <title>Plant Parent {% block extra_title %}{% endblock %}</title>
+</head>
 
-    {% block page_header %}
-    {% endblock %}
+<body class="d-flex flex-column h-100">
+	<!-- Navbar Fixed to the top -->
+	<header>
+		<nav class="navbar fixed-top navbar-expand-md">
+			<div class="container-fluid p-0 p-md-1">
+				<button class="navbar-toggler hamburger hamburger--elastic" type="button" data-bs-toggle="collapse" 
+					data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" 
+					aria-expanded="false" aria-label="Toggle navigation">
+					<span class="hamburger-box">
+						<span class="hamburger-inner"></span>
+					</span>
+				</button>
+				<a class="navbar-brand d-md-none txt-darkblue font-heading" href="{% url 'home' %}">
+					<img src="" alt="" class="logo" >
+				</a>
+				<ul class="list-inline list-unstyled me-2 mb-0 d-flex d-md-none navbar-icons">
+					<li class="list-inline-item mx-2">
+						<a href="" class="shopping-cart-icon">
+							<i class="fas fa-shopping-cart"></i>
+							{% if cart_items %}
+								<span class="badge rounded-pill"></span>
+							{% endif %}
+						</a>
+					</li>
+					<li class="list-inline-item dropdown mx-2">
+						<a href="#" class="dropdown-toggle" id="accountDropdown" role="button" 
+							data-bs-toggle="dropdown" aria-expanded="false">
+							<i class="fas fa-user"></i>
+						</a>
+						<ul class="dropdown-menu" aria-labelledby="accountDropdown">
+							{% if request.user.is_authenticated %}
+							<li><a class="dropdown-item" href="">Order History</a></li>
+							<li><a class="dropdown-item" href="">My Membership</a></li>
+							<li><a class="dropdown-item" href="">My Details</a></li>
+							<li><a class="dropdown-item" href="{% url 'account_logout' %}">Log Out</a></li>
+							{% else %}
+							<li><a class="dropdown-item" href="">Register</a></li>
+              <li><a class="dropdown-item" href="{% url 'account_login' %}">Log In</a></li>
+							{% endif %}
+						</ul>
+					</li>
+				</ul>
+				<div class="collapse navbar-collapse clr-steel" id="navbarSupportedContent">
+					<a class="navbar-brand ms-5 d-none d-md-flex txt-darkblue font-heading" href="{% url 'home' %}">
+						<img src="" alt="" class="logo" >
+					</a>
+					<div class="card card-body border-0 rounded-0 d-md-none search-nav">
+						<form method="GET" action="" class="d-flex mx-auto">
+							<input class="form-control form-control-sm me-2 rounded-0" type="search" placeholder="Search" aria-label="Search" name="search">
+							<button class="btn btn-outline-dark btn-sm rounded-0" type="submit">Search</button>
+						</form>
+					</div>
+					<ul class="navbar-nav mx-auto mb-2 mb-md-0">
+						<li class="nav-item px-2 p-md-0">
+							<a class="nav-link mx-1 {% block main_nav_home %}{% endblock %}" aria-current="page" href="{% url 'home' %}">Home</a>
+						</li>
+						<li class="nav-item dropdown px-2 p-md-0">
+							<a class="nav-link mx-1 dropdown-toggle {% block main_nav_shop %}{% endblock %}" href="#" id="navbarDropdown" role="button" 
+								data-bs-toggle="dropdown" aria-expanded="false">
+								Shop
+							</a>
+							<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+								<li><a class="dropdown-item" href="">Plants</a></li>
+								<li><a class="dropdown-item" href="">Pots</a></li>
+								<li><a class="dropdown-item" href="">Accessories</a></li>
+								<li><a class="dropdown-item" href="">Shop All</a></li>
+							</ul>
+						</li>
+						<li class="nav-item px-2 p-md-0">
+							<a class="nav-link mx-1 {% block main_nav_memberships %}{% endblock %}" href="">Memberships</a>
+						</li>
+					</ul>
+					<ul class="list-inline list-unstyled me-5 mb-0 d-none d-md-flex navbar-icons">
+						<li class="list-inline-item mx-2">
+							<a data-bs-toggle="collapse" href="#searchCollapse"
+								role="button" aria-expanded="false" aria-controls="searchCollapse"
+								id="search-btn">
+								<i class="fas fa-search"></i>
+							</a>
+						</li>
+						<li class="list-inline-item mx-2">
+							<a href="" class="shopping-cart-icon">
+								<i class="fas fa-shopping-cart"></i>
+								{% if cart_items %}
+									<span class="badge rounded-pill">{{ item_count }}</span>
+								{% endif %}
+							</a>
+						</li>
+						<li class="list-inline-item dropdown mx-2">
+							<a href="#" class="dropdown-toggle" id="accountMobileDropdown" role="button" 
+								data-bs-toggle="dropdown" aria-expanded="false">
+								<i class="fas fa-user"></i>
+							</a>
+							<ul class="dropdown-menu" aria-labelledby="accountMobileDropdown">
+								{% if request.user.is_authenticated %}
+									<li><a class="dropdown-item" href="">Order History</a></li>
+									<li><a class="dropdown-item" href="">My Membership</a></li>
+									<li><a class="dropdown-item" href="">My Details</a></li>
+									<li><a class="dropdown-item" href="{% url 'account_logout' %}">Log Out</a></li>
+								{% else %}
+									<li><a class="dropdown-item" href="{% url 'memberships' %}">Register</a></li>
+									<li><a class="dropdown-item" href="{% url 'account_login' %}">Log In</a></li>
+								{% endif %}
+							</ul>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+		<div class="large-nav collapse collapsed-search fixed-top" id="searchCollapse">
+			<div class="card card-body border-0 rounded-0 search-nav">
+				<form method="GET" action="" class="d-flex mx-auto">
+					<input class="form-control form-control-sm me-2 rounded-0" type="search" placeholder="Search" aria-label="Search" name="search">
+					<button class="btn btn-outline-dark btn-sm rounded-0" type="submit">Search</button>
+				</form>
+			</div>
+    </div>
+  </header>
+  {% if messages %}
+  <div class="message-container"></div>
+  {% endif %}
 
-    {% block content %}
-    {% endblock %}
+  {% block page_header %}
+  {% endblock %}
 
-    {% block postloadjs %}
-    {% endblock %}
+  <main class="flex-shrink-0">
+		{% block content %}
+		{% endblock content %}
+	</main>
 
-    
-  </body>
+  <footer class="footer mt-auto py-1 clr-steel">
+		<div class="container-fluid p-1 py-3">
+			<div class="col-auto col-sm d-flex justify-content-center">
+				<div class="mt-3 mt-sm-0">
+					<ul class="list-inline list-unstyled mx-auto mb-2 mb-md-0 fs-4">
+						<li class="list-inline-item"><a href="https://twitter.com/?lang=en" target="_blank"><i class="fab fa-twitter"></i></a></li>
+						<li class="list-inline-item"><a href="https://www.instagram.com/" target="_blank"><i class="fab fa-instagram"></i></a></li>
+						<li class="list-inline-item"><a href="https://www.facebook.com/" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</footer>
+
+  {% block postloadjs %}
+  {% endblock %}
+
+
+</body>
+
 </html>
