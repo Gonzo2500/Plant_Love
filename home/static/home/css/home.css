@@ -10,3 +10,141 @@
 .home-page-content {
     height: 95%;
 }
+/* Colorful line dividers */
+.colored-lines {
+    height: 1rem;
+    background-color: var(--color-light-steel);
+    background: -webkit-gradient(linear,
+                left top, left bottom,
+                from(var(--color-light-pink)),
+                color-stop(20%, var(--color-light-pink)),
+                color-stop(20%, var(--color-light-steel)),
+                color-stop(40%, var(--color-light-steel)),
+                color-stop(40%, var(--color-steel)),
+                color-stop(60%, var(--color-steel)),
+                color-stop(60%, var(--color-green)),
+                color-stop(80%, var(--color-green)),
+                color-stop(0, var(--color-light-green)));
+    background: -o-linear-gradient(var(--color-light-pink),
+                var(--color-light-pink) 20%,
+                var(--color-light-steel) 20%,
+                var(--color-light-steel) 40%,
+                var(--color-steel) 40%,
+                var(--color-steel) 60%,
+                var(--color-green) 60%,
+                var(--color-green) 80%,
+                var(--color-light-green) 0);
+    background: linear-gradient(var(--color-light-pink),
+                var(--color-light-pink) 20%,
+                var(--color-light-steel) 20%,
+                var(--color-light-steel) 40%,
+                var(--color-steel) 40%,
+                var(--color-steel) 60%,
+                var(--color-green) 60%,
+                var(--color-green) 80%,
+                var(--color-light-green) 0);
+    margin-top: -3rem;
+  }
+
+
+  /* How it works section styles */
+.steps-container {
+    max-width: 250px;
+    margin: 0 auto;
+}
+
+.steps-container.txt-steel, .steps-container.txt-pink {
+    margin-top: 0;
+}
+
+.steps-container>img {
+    max-width: 150px;
+    max-height: 150px;
+}
+
+/* New features section styles */
+.new-this-month {
+    text-align: center;
+}
+
+.showcase1 {
+    width: 100%;
+    max-width: 200px;
+    padding: 1rem;
+    border: 1px solid var(--color-light-pink);
+}
+
+.showcase2 {
+    width: 100%;
+    max-width: 100px;
+    position: relative;
+    right: 4rem;
+    top: 4rem;
+}
+
+.new-this-month-txt p {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+/* Instagram section styles */
+.insta-pic-container {
+    max-width: 600px;
+    margin: 0 auto;
+    position: relative;
+
+}
+
+.insta-pic-container img {
+    max-width: 100%;
+    -webkit-box-sizing: content-box;
+            box-sizing: content-box;
+    padding: 0;
+    margin: 0;
+
+}
+
+
+@media (max-width: 350px){
+    .showcase2{
+        display: none;
+    }
+}
+
+@media (min-width: 576px) {
+    .showcase1 {
+        max-width: 300px;
+        padding: 2rem;
+    }
+
+    .showcase2 {
+        max-width: 150px;
+    }
+}
+
+@media (min-width: 992px) {
+    .cacti-heading:after {
+        height: 5px;
+        width: 6rem;
+        margin-left: -6rem;
+    }
+
+    .steps-container.txt-steel {
+        margin-top: 7rem;
+    }
+    .steps-container.txt-pink {
+        margin-top: 14rem;
+    }
+
+    .new-this-month {
+        text-align: right;
+    }
+    
+    .showcase1 {
+        max-width: 400px;
+    }
+    
+    .showcase2 {
+        max-width: 200px;
+    }
+}
