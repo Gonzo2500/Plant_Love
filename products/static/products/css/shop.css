@@ -1,0 +1,72 @@
+/* --------- MAIN SHOP NAV BUTTONS --------- */
+.shop-button {
+    height: 4rem;
+    width: 4rem;
+    background-image: url(/media/cacti-btn.png);
+    background-size: cover;
+    color: var(--color-light-pink);
+    font-family: var(--font-headings);
+    text-align: center;
+    line-height: 4rem;
+    font-size: 1rem;
+    -webkit-box-sizing: content-box;
+            box-sizing: content-box;
+    border: 3px solid transparent;
+}
+
+.shop-category a {
+    text-decoration: none;
+    -webkit-box-sizing: content-box;
+            box-sizing: content-box;
+}
+
+.shop-category div:hover, .shop-button-active {
+    border: 3px solid var(--color-light-steel);
+    color: var(--color-light-steel);
+    text-decoration: underline;
+    -webkit-box-sizing: content-box;
+            box-sizing: content-box;
+}
+
+@media (max-width: 350px) {
+    .shop-button {
+        height: 3rem;
+        width: 3rem;
+        line-height: 3rem;
+    }
+}
+
+@media (min-width: 768px) {
+    .shop-button {
+        height: 5rem;
+        width: 5rem;
+        line-height: 5rem;
+        font-size: 1.5rem;
+    }
+}
+
+/* --------- SORT BUTTONS ---------- */
+
+.sort-section {
+    line-height: 2;
+}
+
+#sort-container a {
+    border: 1px solid var(--color-light-pink);
+    color: var(--color-main);
+    text-decoration: none;
+    white-space: nowrap;
+
+}
+
+#sort-container a:hover {
+    background-color: var(--color-light-pink);
+}
+ 
+#sort-trigger i {
+    border: 2px solid var(--color-light-steel);
+}
+ 
+#sort-trigger i:hover {
+   background-color: var(--color-light-steel);
+}
