@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'products/css/shop.css' %}">
+{% endblock %}
+
+{% block add_title %}Home{% endblock %}
+
+{% block main_nav_home %}
+    active
+{% endblock %}
+
+
+{% block content%}
+ <!-- Shop Header -->
+ <div class="container my-3">
+    <ul class="list-inline list-unstyled d-flex justify-content-center mb-0">
+        <!-- Loop through categories and display in the header -->
+        {% for category in categories %}
+            <li class="list-inline-item shop-category">
+                <a href="{% url 'products' %}?category={{ category.name }}">
+                    {% if category.name == 'Accessories' %}
+                    <div class="shop-button {% if category.name == active_category %}shop-button-active{% endif %}">Misc</div>
+                    {% else %}
+                    <div class="shop-button {% if category.name == active_category %}shop-button-active{% endif %}">{{ category.name }}</div>
+                    {% endif %}
+                </a>
+            </li>
+        {% endfor %}
+        <!-- Add All in the Shop Header to display all items -->
+        <li class="list-inline-item shop-category">
+            <a href="{% url 'products' %}">
+                <div class="shop-button {% if active_category == 'All' %}shop-button-active{% endif %}">All</div>
+            </a>
+        </li>
+    </ul>
+</div>
+
+<!-- Product Item container -->
+<div class="container">
+    <div class="text-end d-flex justify-content-end sort-section">
+        <!-- Sorting Icon container -->
+        <div class="sort-width" id="sort-container">
+            <a href="{% url 'products' %}?category={{ active_category }}&sort=name" class="mx-1 p-1">
+                <i class="fas fa-sort-alpha-down"></i>
+            </a>
+            <a href="{% url 'products' %}?category={{ active_category }}&sort=-name" class="mx-1 p-1">
+                <i class="fas fa-sort-alpha-up"></i>
+            </a>
+            <a href="{% url 'products' %}?category={{ active_category }}&sort=added_date" class="mx-1 p-1">
+                <i class="far fa-calendar-alt"></i><i class="fas fa-long-arrow-alt-down"></i>
+            </a>
+            <a href="{% url 'products' %}?category={{ active_category }}&sort=-added_date" class="mx-1 p-1">
+                <i class="far fa-calendar-alt"></i><i class="fas fa-long-arrow-alt-up"></i>
+            </a>
+            <a href="{% url 'products' %}?category={{ active_category }}&sort=price" class="mx-1 p-1">
+                <i class="far fa-money-bill-alt"></i><i class="fas fa-long-arrow-alt-down"></i>
+            </a>
+            <a href="{% url 'products' %}?category={{ active_category }}&sort=-price" class="mx-1 p-1">
+                <i class="far fa-money-bill-alt"></i><i class="fas fa-long-arrow-alt-up"></i>
+            </a>
+        </div>
+        <!-- Trigger element that hides/displays sorting icons -->
+        <p id="sort-trigger">
+            <i class="fas fa-filter rounded-0 p-1"></i>
+        </p>
+    </div>
+    <div class="row">
+        <!-- For each Product display a card with image, title, rating, price and button to buy the item -->
+        {% for product in products %}
+            <div class="col-sm-6 col-md-4 col-xl-3">
+                <div class="card my-3 mx-auto rounded-0 text-center" style="max-width: 300px;">
+                    <a href="{% url 'product_item' product.pk %}">
+                        {% if product.main_pic %}
+                            <img class="img-fluid" src="{{ product.main_pic.url }}" alt="An image of a {{ product.name }}">
+                        {% else %}
+                            <img class="img-fluid" src="" alt="">
+                        {% endif %}
+                    </a>
+                    <div class="card-body text-center">
+                        <h5 class="card-title">{{ product.name }}</h5>
+                        <p class="card-text"></p>
+                        <div>
+                            <span class="rating-stars" data-value="{{ product.avg_rating }}"></span>
+                        </div>
+                        <p>€{{ product.price }}</p>
+                        <!-- Allows user to  -->
+                        <form method="POST" action="">
+                            <!-- Token used to protect against cross site request forgeries -->
+                            {% csrf_token %}
+                            <!-- Quantity hidden -->
+                            <input type="hidden" value="1" name="quantity">
+                            <!-- Get path to redirect user back -->
+                            <input type="hidden" name="redirect_url" value="{{ request.path }}">
+                            <!-- Display Pick a Color button if multiple coors available, otherwise display Buy Now -->
+                            <button type="submit" class="button button-steel">Buy Now</button>
+                        </form>  
+                    </div>
+                </div>
+            </div>
+        <!-- If not items available in a category display this message -->
+        {% empty %}
+            <h4>Sorry there are no items in this category</h4>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+{% block extrapostloadjs %}
+    <!-- Add these values as id on an element so that JS can pick it up and use it in an external script -->
+    {{ media_url|json_script:"id_media_url" }}
+    <script src="{% static 'products/js/shop.js' %}"></script>
+{% endblock %}

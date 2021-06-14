@@ -1,0 +1,66 @@
+% extends "base.html" %}
+{% load static %}
+
+{% block extra_title %}Product Details{% endblock %}
+
+{% block content %}
+    <div class="container mt-1 mt-md-5">
+        <!-- Back button -->
+        <a class="button button-steel" id="back-btn">
+            Back
+        </a>
+
+        <!-- Main Product Detail view -->
+        <div class="row text-center">
+            <div class="col-12 col-md-6">
+                {% if product.main_pic %}
+                    <img src="{{ product.main_pic.url }}" alt="The main picture of {{ product.name }}" class="img-fluid">
+                    {% else %}
+                    <img src="" alt="" class="img-fluid">
+                {% endif %}
+            </div>
+            <div class="col-12 col-md-6 px-3 px-md-3 px-lg-5">
+                <h3 class="mb-3 font-heading heading-green p-1 d-inline-block">{{product.name}}</h3>
+                <div class="mb-2">
+                    <span class="rating-stars" data-value="{{ product.avg_rating }}"></span><span>({{ reviews.count }})</span>
+                </div>
+                <p>{{ product.description }}</p>
+                <form method="POST" action="{% url 'add_item_to_cart' product.pk %}">
+                    <!-- Token used to protect against cross site request forgeries -->
+                    {% csrf_token %}
+                    
+                    <!-- Quantitiy container -->
+                    <div class="qty-container">
+                        <!-- Decrement button -->
+                        <button class="btn btn-sm decr-btn" type="button">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <!-- Quantity input -->
+                        <input type="number" min="1" max="10" step="1" value="1" name="quantity" onkeydown="return false"
+                        data-item_id="{{ product.pk }}" class="p-2 qty-value">
+                        <!-- Increment button -->
+                        <button class="btn btn-sm incr-btn" type="button">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+
+                    <!-- Price, this changes as the quantity updates -->
+                    <p class="fs-4 mt-2" id="item-price-{{ product.price }}">€ {{ product.price }}</p>
+                    <!-- Button to add item in the cart -->
+                    <button type="submit" class="button button-green p-2 mb-5">
+                        Put in the cart <i class="fas fa-cart-arrow-down"></i>
+                    </button>
+                    <input type="hidden" name="redirect_url" value="{{ request.path }}">
+                </form>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <!-- Render each product reviews here by including reviews code -->
+    {% include 'reviews/includes/reviews.html' %}
+
+{% endblock content %}
+
+{% block extrapostloadjs %}
+  <script src="{% static 'products/js/product_item.js' %}"></script>
+{% endblock %}
