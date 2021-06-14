@@ -110,8 +110,8 @@
 								Shop
 							</a>
 							<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-								<li><a class="dropdown-item" href="">Plants</a></li>
-								<li><a class="dropdown-item" href="">Pots</a></li>
+								<li><a class="dropdown-item" href="{% url 'products' %}?category=Plants">Plants</a></li>
+								<li><a class="dropdown-item" href="{% url 'products' %}?category=Pots">Pots</a></li>
 								<li><a class="dropdown-item" href="">Accessories</a></li>
 								<li><a class="dropdown-item" href="">Shop All</a></li>
 							</ul>
@@ -206,6 +206,9 @@
 
   <!-- Base js  -->
   <script src="{% static 'js/base.js' %}"></script>
+  {% endblock %}
+  
+  {% block extrapostloadjs %}
   {% endblock %}
 
 
