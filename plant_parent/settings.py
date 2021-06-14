@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'home',
     'products',
+    'shopping_cart',
      # colorfield in Products.Color model
     'colorfield',
 ]
@@ -73,6 +74,9 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.request',
+                'django.template.context_processors.media',
+                'shopping_cart.context.shopping_cart',
             ],
         },
     },
@@ -153,6 +157,15 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# Delivery and Shipping variables
+STANDARD_DELIVERY_LIMIT = 30
+STANDARD_DELIVERY_CONST = 7
+STANDARD_DELIVERY_RATE = 15
+EXPRESS_DELIVERY_LIMIT = 50
+EXPRESS_DELIVERY_CONST = 15
+EXPRESS_DELIVERY_RATE = 30
+FREE_DELIVERY_LIMIT = 70
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
