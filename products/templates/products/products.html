@@ -86,7 +86,7 @@
                         </div>
                         <p>€{{ product.price }}</p>
                         <!-- Allows user to  -->
-                        <form method="POST" action="">
+                        <form method="POST" action="{% url 'add_item_to_cart' product.pk %}">
                             <!-- Token used to protect against cross site request forgeries -->
                             {% csrf_token %}
                             <!-- Quantity hidden -->
