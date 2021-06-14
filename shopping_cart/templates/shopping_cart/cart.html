@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block add_title %}Shopping Cart{% endblock %}
+
+
+{% block content%}
+ <!-- Shopping cart contents -->
+ {% if cart_items %}
+ <!-- If there are items in the cart, display them -->
+ <div class="container my-5 pt-5 border" style="max-width: 720px;">
+     <h2 class="text-uppercase ms-5">My Cart</h2>
+     <hr>
+     <!-- Loop through the items in the cart and display each in a row -->
+     {% for item in cart_items %}
+         <div class="row text-center">
+             <!-- Item image -->
+             {% if item.product.main_pic %}
+                 <div class="col-12 col-sm-6 col-md-3 row">
+                     <div class="col text-sm-end"><img src="{{ item.product.main_pic.url }}" alt="An image of {{ item.product.name }}" style="height: 200px;"></div>
+                 </div>
+             {% else %}
+                 <div class="col-12 col-sm-6 col-md-3 row">
+                     <div class="col text-sm-end"><img src="{{ MEDIA_URL }}step2.png"" alt="An icon of a cactus" style="height: 200px;"></div>
+                 </div>
+             {% endif %}
+             <!-- Item details -->
+             <div class="col-12 col-sm-6 col-md-9 pt-sm-5 pb-5 row">
+                 <div class="col-12 col-md-4">
+                     <p class="fw-bold text-uppercase">{{ item.product.name }}</p>
+                     <p>€ {{ item.product.price }}</p>
+                     
+                 </div>
+                 <div class="col-12 col-md-4">
+                     <form method="POST" action="{% url 'change_cart' item.product_id %}" name="update-qty">
+                         {% csrf_token %}
+                         <!-- Quantitiy container -->
+                         <div class="qty-container">
+                             <!-- Decrement button -->
+                             <button class="btn btn-sm decr-btn update-qty-btn" type="button">
+                                 <i class="fas fa-minus"></i>
+                             </button>
+                             <!-- Quantity input -->
+                             <input type="number" min="1" max="10" step="1" value="{{ item.quantity }}" name="quantity" onkeydown="return false"
+                             data-item_id="{{ item.product_id }}" class="p-2 qty-value">
+                             <!-- Increment button -->
+                             <button class="btn btn-sm incr-btn update-qty-btn" type="button">
+                                 <i class="fas fa-plus"></i>
+                             </button>
+                         </div>
+                         <input type="hidden" name="redirect_url" value="{{ request.path }}">
+                     </form>
+                     <a class="btn btn-sm text-danger rounded-0 text-uppercase remove-item" id="remove_{{ item.product_id }}">
+                         <small>Don't want this</small>
+                     </a>
+                 </div>
+                 <div class="col-12 col-md-4">
+                     <p class="fs-5">€ {{ item.product_total }}</p>
+                 </div>
+             </div>
+         </div>
+         <hr>
+     {% endfor %}
+     <!-- Total amount for the purchase excluding the deliver -->
+     <div class="row">
+         <div class="col text-center">
+             <!-- If discount is to be applied, display old total and the discount -->
+             {% if discount > 0 %}
+                 <p class="text-decoration-line-through text-muted">Item Total: € {{ subtotal}}</p>
+                 <p class="text-success">{{ discount }}% off </p>
+             {% endif %}
+             <p class="fs-5">Total: € {{ total }}<sup>*</sub></p>
+         </div>
+     </div>
+     <!-- Buttons  -->
+     <div class="row pb-5">
+         <!-- Button to bring user back to shopping -->
+         <div class="col-12 col-sm text-center text-sm-end py-2">
+             <a href="{% url 'products' %}" class="button button-steel">More Shopping</a>
+         </div>
+         <!-- Button to bring user to the checkout -->
+         <div class="col-12 col-sm text-center text-sm-start py-2">
+             <!-- If delivery type has been selected and added to session, use checkout view -->
+             {% if request.session.delivery %}
+                 <a href="{% url 'checkout' %}" class="button button-green">Checkout</a>
+             <!-- If delivery session var does not exist, bring the user to delivery view and add it to the session var -->
+             {% else %}
+                 <a href="{% url 'delivery' %}" class="button button-green">Checkout</a>
+             {% endif %}
+         </div>
+     </div>
+     <!-- Disclaimer at the bottom -->
+     <p class="text-muted text-end"><small><sup>*</sup>Not including delivery charges</small></p>
+ </div>
+{% else %}
+ <!-- If the cart is empty, provide user with a button to the shop -->
+ <div class="col text-center mt-5">
+     <p><i class="fas fa-shopping-cart fs-1"></i></p>
+     <h3 class="my-4">It looks like your cart is empty <i class="far fa-frown"></i> </h3>
+     <a href="{% url 'products' %}" class="button button-pink">Buy something</a>
+ </div>
+{% endif %}
+{% endblock %}
+
+{% block extrapostloadjs %}
+<script src="{% static 'shopping_cart/js/cart.js' %}"></script>
+<script>
+    // Remove item from the cart and reload the page if successful, leave this in the html to use django template variables
+    $('.remove-item').click(function(e) {
+        const itemId = $(this).attr('id').split('remove_')[1];
+        const url = `/cart/${itemId}/remove/`;
+        const data = {
+            'csrfmiddlewaretoken': "{{ csrf_token }}"
+        };
+
+        $.post(url, data)
+        .done(function() {
+            location.reload();
+        });
+    })
+</script>
+{% endblock %}
