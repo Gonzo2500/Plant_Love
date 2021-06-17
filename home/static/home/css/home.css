@@ -123,11 +123,6 @@
 }
 
 @media (min-width: 992px) {
-    .cacti-heading:after {
-        height: 5px;
-        width: 6rem;
-        margin-left: -6rem;
-    }
 
     .steps-container.txt-steel {
         margin-top: 7rem;
