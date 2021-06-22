@@ -1,0 +1,181 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<!-- Page specific css to hide header/footer and style content -->
+<link rel="stylesheet" href="{% static 'checkout/css/checkout.css' %}">
+{% endblock %}
+
+{% block extra_js %}
+<script type="text/javascript" src="{% static 'memberships/js/stripe_sub.js' %}"></script>
+  {% endblock %}
+{% block add_title %}Checkout{% endblock %}
+
+{% block content %}
+
+<div class="container text-center">
+    <h2>You've selected 
+        <span class="font-heading heading-green">
+            <!-- Display name based on user selected membership -->
+            {% if membership.name == 'Ultimate' %}
+                'The Plant Parent {{ membership.name }}'
+            {% else %}
+                'The {{ membership.name }} Parent'
+            {% endif %}
+        </span>
+         membership
+    </h2>
+    <h3 class="txt-green mb-5">
+        <!-- Display free for Basic membership and price for others -->
+        {% if membership.price > 0 %}
+            € {{ membership.price }} /month
+        {% else %}
+            free
+        {% endif %}
+    </h3>
+    <!-- Meembership Benefits -->
+    <div class="row">
+        {% if change_membership %}
+            <div class="col-12 col-md-6 m-auto p-3 text-center">
+                <h4 class="text-uppercase">Current</h4>
+                <!-- If membership offers free delivery, display Nope if None -->
+                <div>
+                    <p class="mb-0">Free Delivery</p>
+                        {% if membership.free_delivery == 'Y' %}
+                            <p class="text-danger">Yes</p>
+                        {% else %}
+                            <p class="text-secondary"> Nope</p>
+                        {% endif %}
+                    </p>
+                </div>
+                <!-- First Order Discount in % -->
+                <div>
+                    <p class="mb-0">First Order Discount</p>
+                    <p class="text-danger">{{ membership.first_order_disc }}%</p>
+                </div>
+                <!-- Overall discount store wide in %, display Nope if None -->
+                <div>
+                    <p class="mb-0">Overall Discount</p>
+                        {% if membership.overall_discount %}
+                            <p class="text-danger">{{ membership.overall_discount }}%</p>
+                        {% else %}
+                            <p class="text-secondary">Nope</p>
+                        {% endif %}
+                    </p>
+                </div>
+                <!-- Quarterly gift package -->
+                <div>
+                    <p class="mb-0">Quarterly Gift package</p>
+                    <p class="text-danger">{{ membership.q_gift }}</p>
+                </div>
+                <!-- Priority of accessing new collections -->
+                <div>
+                    <p class="mb-0">Access to new colections</p>
+                    {% if membership.priority == 'High' %}
+                        <p class="text-danger">A week before release date</p>
+                    {% else %}
+                        <p class="text-secondary">On release date</p>
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
+        <div class="col-12 col-md-6 border m-auto p-3 text-center">
+            {% if change_membership %}
+            <h4 class="text-uppercase">Selected</h4>
+            {% else %}
+            <h4 class="text-uppercase">Benefits</h4>
+            {% endif %}
+            <!-- If membership offers free delivery, display Nope if None -->
+            <div>
+                <p class="mb-0">Free Delivery</p>
+                    {% if membership.free_delivery == 'Y' %}
+                        <p class="text-danger">Yes</p>
+                    {% else %}
+                        <p class="text-secondary"> Nope</p>
+                    {% endif %}
+                </p>
+            </div>
+            <!-- First Order Discount in % -->
+            <div>
+                <p class="mb-0">First Order Discount</p>
+                <p class="text-danger">{{ membership.first_order_disc }}%</p>
+            </div>
+            <!-- Overall discount store wide in %, display Nope if None -->
+            <div>
+                <p class="mb-0">Overall Discount</p>
+                    {% if membership.overall_discount %}
+                        <p class="text-danger">{{ membership.overall_discount }}%</p>
+                    {% else %}
+                        <p class="text-secondary">Nope</p>
+                    {% endif %}
+                </p>
+            </div>
+            <!-- Quarterly gift package -->
+            <div>
+                <p class="mb-0">Quarterly Gift package</p>
+                <p class="text-danger">{{ membership.q_gift }}</p>
+            </div>
+            <!-- Priority of accessing new collections -->
+            <div>
+                <p class="mb-0">Access to new colections</p>
+                {% if membership.priority == 'High' %}
+                    <p class="text-danger">A week before release date</p>
+                {% else %}
+                    <p class="text-secondary">On release date</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <!-- if user is not changing the membership -->
+    {% if not change_membership %}
+        <!-- Allow user to change the selected membership before payment  -->
+        <div class="row mt-5">
+            <div class="col-12 col-md-6 m-auto border p-3">
+                <h4 class="text-uppercase">Change</h4>
+                <!-- Form contains membership types -->
+                <form action="{% url 'membership_checkout' %}" method="GET" class="text-center">
+                    <select class="form-select" aria-label="Default select example" name="membership-new">
+                        <!-- Loop through membership types, display selected membership -->
+                        {% for m in all_memberships %}
+                            {% if m.name == membership.name %}
+                                <option selected value="{{ m.name }}">{{ m.name }}</option>
+                            {% else %}
+                                <option value="{{ m.name }}">{{ m.name }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                    <button class="text-upppercase btn btn-sm btn-outline-secondary rounded-0 mt-3">Update</button>
+                </form>
+            </div>
+        </div>
+    {% endif %}
+
+    <!-- Payment container -->
+    <div class="row mt-5">
+        <div class="col-12 col-md-6 m-auto border p-3 text-center">
+            <h4 class="text-uppercase">Payment</h4>
+            <p>Total due now: <span class="fs-5">€ {{ membership.price }}<sup>*</sup></span></p>
+            <!-- If user is changing mebership, process it through membership_update view -->
+            {% if change_membership %}
+                <p class="text-danger">This will cancel your current membership and subscribe you to the {{ membership.name }} plan.</p>
+                <div>
+                    <a class="button button-steel" href="{% url 'products' %}">Cancel</a>
+                    <a href="{% url 'membership_update' %}" class="button button-green">Confirm</a>
+                </div>
+            <!-- If user has selected other memberships as his first paid memebrship, re-direct to the checkout page -->
+            {% else %}
+                <div class="text-center my-3">
+                    <button type="submit" class="button button-green" id="submitBtn">Confirm</button>
+                </div>
+            {% endif %}
+            <!-- If user4 has selected Basic memebrship, let them know that the card won't be charged at all -->
+            {% if membership.name == 'Basic' and not change_membership %}
+                <p class="text-end mb-0"><sup>*</sup><small>We need your card details but your card won't be charged</small></p>
+            {% elif membership.price > 0 %}
+                <p class="text-end mb-0"><sup>*</sup><small>This amount will be charged on your card monthly</small></p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

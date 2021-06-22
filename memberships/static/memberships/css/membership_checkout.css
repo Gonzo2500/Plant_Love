@@ -1,0 +1,4 @@
+/* Hide header and footer in memebrship checkout */
+header, footer {
+    visibility: hidden;
+}

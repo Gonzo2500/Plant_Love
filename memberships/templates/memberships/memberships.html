@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block add_title %}Memberships{% endblock %}
+
+{% block main_nav_memberships %}
+    active
+{% endblock %}
+
+{% block content %}
+
+<!-- Membership Container -->
+<div class="container text-center">
+    <h2 class="font-heading heading-green d-inline-block p-1 mt-5 mb-3">Memberships</h2>
+    <div class="row text-center mb-5 pt-5">
+        <!-- Loop through membership model and display all memebrships and their benefits -->
+        {% for membership in memberships %}
+            <div class="col-12 col-sm-6 col-md-4 mb-5 mb-md-0 {% if membership.name == user_membership %}border{% endif %}">
+                <!-- Membership Name -->
+                <h5 class="text-uppercase pt-5">The {% if membership.name == 'Supreme' %}Plant Lover {{ membership.name }}{% else %}{{membership.name}} Parent{% endif %}</h5>
+                <!-- Memberhsip image -->
+                <div style="height: 15rem;">
+                    <img src="{{ membership.pic.url }}" alt="plant logo for {{ membership.name}} Plant Parent membership" style="height: 12rem;">
+                </div>
+                <!-- If membership offers free delivery, display Nope if None -->
+                <div>
+                    <p class="mb-0">Free Delivery</p>
+                    {% if membership.free_delivery == 'Y' %}
+                        <p class="text-danger">Yes</p>
+                    {% else %}
+                        <p class="text-secondary"> Nope</p>
+                    {% endif %}
+                </div>
+                <!-- First Order Discount in % -->
+                <div>
+                    <p class="mb-0">First Order Discount</p>
+                    <p class="text-danger">{{ membership.first_order_disc }}%</p>
+                </div>
+                <!-- Overall discount store wide in %, display Nope if None -->
+                <div>
+                    <p class="mb-0">Overall Discount</p>
+                    {% if membership.overall_discount %}
+                        <p class="text-danger">{{ membership.overall_discount }}%</p>
+                    {% else %}
+                        <p class="text-secondary">Nope</p>
+                    {% endif %}
+                </div>
+                <!-- Quarterly gift package -->
+                <div>
+                    <p class="mb-0">Quarterly Gift package</p>
+                    <p class="text-danger">{{ membership.q_gift }}</p>
+                </div>
+                <!-- Priority of accessing new collections -->
+                <div>
+                    <p class="mb-0">Access to new colections</p>
+                    {% if membership.priority == 'High' %}
+                        <p class="text-danger">A week before release date</p>
+                    {% else %}
+                        <p class="text-secondary">On release date</p>
+                    {% endif %}
+                </div>
+                <!-- Price, display free if None -->
+                <div>
+                    <p class="fs-4 txt-green">
+                        {% if membership.price %}
+                            € {{ membership.price }}
+                        {% else %}
+                            free
+                        {% endif %}
+                    </p>
+                </div>
+                <!-- Form that posts the name of the memebrship that is stored as a session variable and retrieved after signup -->
+                {% if request.user.is_authenticated and user_membership %}
+                    <form action="{% url 'membership_change' %}" method="POST" class="pb-5">
+                        {% csrf_token %}
+                        <input type="hidden" value="{{ membership.name }}" name="membership_type">
+                        {% if membership.name == user_membership %}
+                            <button class="button button-disabled" disabled>Subscribed</button>
+                        {% else %}
+                            <button class="button button-green">Change</button>
+                        {% endif %}
+                    </form>
+                {% else %}
+                    <form action="{% url 'membership_type' %}" method="POST" class="pb-5">
+                        {% csrf_token %}
+                        <input type="hidden" value="{{ membership.name }}" name="membership_type">
+                        <button class="button button-green">Choose Me</button>
+                    </form>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
