@@ -107,7 +107,8 @@
 </div>
 {% endblock %}
 {% block extrapostloadjs %}
-    <!-- Add these values as id on an element so that JS can pick it up and use it in an external script -->
-    {{ media_url|json_script:"id_media_url" }}
-    <script src="{% static 'products/js/shop.js' %}"></script>
+{{ block.super }}
+<!-- Add these values as id on an element so that JS can pick it up and use it in an external script -->
+{{ media_url|json_script:"id_media_url" }}
+<script src="{% static 'products/js/shop.js' %}"></script>
 {% endblock %}
