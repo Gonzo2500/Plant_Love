@@ -104,10 +104,23 @@
 
 }
 
+.insta-img{
+    height:300px
+}
+.insta-img img{
+ min-height:100%;
+}
+
 
 @media (max-width: 350px){
     .showcase2{
         display: none;
+    }
+}
+
+@media (max-width: 450px){
+    .insta-img{
+        height:200px
     }
 }
 
