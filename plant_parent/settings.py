@@ -10,7 +10,10 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import os
+import dj_database_url
 from pathlib import Path
+if os.path.exists("env.py"):
+    import env
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-ku&u591v*h@=(v*kmfp+0tm6&wuex2q=)pw=)dful*9)fn55^0'
+SECRET_KEY = os.environ.get('SECRET_KEY', '')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -31,6 +34,16 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    # Apps created
+    'home.apps.HomeConfig',
+    'products.apps.ProductsConfig',
+    'shopping_cart.apps.ShoppingCartConfig',
+    'checkout.apps.CheckoutConfig',
+    'memberships.apps.MembershipsConfig',
+    'profiles.apps.ProfilesConfig',
+    'reviews.apps.ReviewsConfig',
+
+    # Default apps installed
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -41,11 +54,17 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-    'home',
-    'products',
-    'shopping_cart',
-     # colorfield in Products.Color model
+
+    # social logins
+    'allauth.socialaccount.providers.google',
+    # 'allauth.socialaccount.providers.facebook',
+
+    # colorfield in Products.Color model
     'colorfield',
+    # storages needed for AWS connection
+    'storages',
+    'django_countries',
+    'crispy_forms'
 ]
 
 MIDDLEWARE = [
@@ -65,7 +84,7 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
              os.path.join(BASE_DIR, 'templates'),
-            os.path.join(BASE_DIR, 'templates', 'allauth'),
+             os.path.join(BASE_DIR, 'templates', 'allauth'),
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -76,11 +95,18 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'django.template.context_processors.request',
                 'django.template.context_processors.media',
-                'shopping_cart.context.shopping_cart',
+                'shopping_cart.contexts.cart_contents',
             ],
+            'builtins': [
+                'crispy_forms.templatetags.crispy_forms_tags',
+                'crispy_forms.templatetags.crispy_forms_field',
+            ]
         },
     },
 ]
+
+MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
+
 
 AUTHENTICATION_BACKENDS = [
     # Needed to login by username in Django admin, regardless of `allauth`
@@ -92,8 +118,6 @@ AUTHENTICATION_BACKENDS = [
 
 SITE_ID = 1
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
 ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
@@ -101,19 +125,40 @@ ACCOUNT_SIGNUP_EMAIL_ENTER_TWICE = True
 ACCOUNT_USERNAME_MIN_LENGTH = 4
 LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/profile/'
+LOGIN_REDIRECT_URL = '/memberships/membership_checkout/'
+
+# Social providers
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        }
+    }
+}
 
 WSGI_APPLICATION = 'plant_parent.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+
+# SQLite and Postgres Databases
+if 'DATABASE_URL' in os.environ:
+    DATABASES = {
+        'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
+    }
+
 
 
 # Password validation
@@ -167,7 +212,29 @@ EXPRESS_DELIVERY_CONST = 15
 EXPRESS_DELIVERY_RATE = 30
 FREE_DELIVERY_LIMIT = 70
 
-# Default primary key field type
-# https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
+# Stripe settings and variables
+STRIPE_CURRENCY = 'eur'
+STRIPE_PUBLIC_KEY = os.getenv('STRIPE_PUBLIC_KEY', '')
+STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY', '')
+STRIPE_WH_SECRET_CH = os.getenv('STRIPE_WH_SECRET_CH', '')
+STRIPE_WH_SECRET_SUB = os.getenv('STRIPE_WH_SECRET_SUB', '')
+STRIPE_PRICE_ID_BASIC = os.getenv('STRIPE_PRICE_ID_BASIC', '')
+STRIPE_PRICE_ID_ADVANCED = os.getenv('STRIPE_PRICE_ID_ADVANCED', '')
+STRIPE_PRICE_ID_ULTIMATE = os.getenv('STRIPE_PRICE_ID_ULTIMATE', '')
+DOMAIN_URL = os.getenv('DOMAIN_URL', '')
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+ # Display e-mails in terminal during development
+if 'DEVELOPMENT' in os.environ:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+    DEFAULT_FROM_EMAIL = 'plantparent@example.com'
+# Send e-mails to user's e-mail address in deployment
+else:
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+    EMAIL_USE_TLS = True
+    EMAIL_PORT = 587
+    EMAIL_HOST = 'smtp.gmail.com'
+    EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+    EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASS')
+    DEFAULT_FROM_EMAIL = os.environ.get('EMAIL_HOST_USER')
+
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
