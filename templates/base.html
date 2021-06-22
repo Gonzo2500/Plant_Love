@@ -23,6 +23,8 @@
   <link href="{% static 'css/hamburger.min.css' %}" rel="stylesheet">
   <!-- Base css accross all pages -->
   <link rel="stylesheet" href="{% static 'css/base.css' %}">
+  <!-- Notify Toaster CDN -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
 
   {% endblock %}
 
@@ -30,16 +32,12 @@
   {% endblock %}
 
   {% block corejs %}
+  	<!-- Font Awesome kit -->
   <script src="https://kit.fontawesome.com/3c3a5a46f5.js" crossorigin="anonymous"></script>
-  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-    integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
-  </script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
-  </script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
-    integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
-  </script>
+  <!-- Notify Toast JS -->
+  <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+  <!-- Stripe -->
+  <script src="https://js.stripe.com/v3/"></script>
   {% endblock %}
 
   {% block extra_js %}
@@ -79,12 +77,12 @@
 						</a>
 						<ul class="dropdown-menu" aria-labelledby="accountDropdown">
 							{% if request.user.is_authenticated %}
-							<li><a class="dropdown-item" href="">Order History</a></li>
-							<li><a class="dropdown-item" href="">My Membership</a></li>
-							<li><a class="dropdown-item" href="">My Details</a></li>
+							<li><a class="dropdown-item" href="{% url 'order_history' %}">Order History</a></li>
+							<li><a class="dropdown-item" href="{% url 'user_membership' %}">My Membership</a></li>
+							<li><a class="dropdown-item" href="{% url 'profile' %}">My Details</a></li>
 							<li><a class="dropdown-item" href="{% url 'account_logout' %}">Log Out</a></li>
 							{% else %}
-							<li><a class="dropdown-item" href="">Register</a></li>
+							<li><a class="dropdown-item" href="{% url 'memberships' %}">Register</a></li>
               <li><a class="dropdown-item" href="{% url 'account_login' %}">Log In</a></li>
 							{% endif %}
 						</ul>
@@ -95,7 +93,7 @@
 						<img src="" alt="" class="logo" >
 					</a>
 					<div class="card card-body border-0 rounded-0 d-md-none search-nav">
-						<form method="GET" action="" class="d-flex mx-auto">
+						<form method="GET" action="{% url 'products' %}" class="d-flex mx-auto">
 							<input class="form-control form-control-sm me-2 rounded-0" type="search" placeholder="Search" aria-label="Search" name="search">
 							<button class="btn btn-outline-dark btn-sm rounded-0" type="submit">Search</button>
 						</form>
@@ -112,12 +110,12 @@
 							<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
 								<li><a class="dropdown-item" href="{% url 'products' %}?category=Plants">Plants</a></li>
 								<li><a class="dropdown-item" href="{% url 'products' %}?category=Pots">Pots</a></li>
-								<li><a class="dropdown-item" href="">Accessories</a></li>
-								<li><a class="dropdown-item" href="">Shop All</a></li>
+								<li><a class="dropdown-item" href="{% url 'products' %}?category=Accessories">Accessories</a></li>
+								<li><a class="dropdown-item" href="{% url 'products' %}">Shop All</a></li>
 							</ul>
 						</li>
 						<li class="nav-item px-2 p-md-0">
-							<a class="nav-link mx-1 {% block main_nav_memberships %}{% endblock %}" href="">Memberships</a>
+							<a class="nav-link mx-1 {% block main_nav_memberships %}{% endblock %}" href="{% url 'memberships' %}">Memberships</a>
 						</li>
 					</ul>
 					<ul class="list-inline list-unstyled me-5 mb-0 d-none d-md-flex navbar-icons">
@@ -143,9 +141,9 @@
 							</a>
 							<ul class="dropdown-menu" aria-labelledby="accountMobileDropdown">
 								{% if request.user.is_authenticated %}
-									<li><a class="dropdown-item" href="">Order History</a></li>
-									<li><a class="dropdown-item" href="">My Membership</a></li>
-									<li><a class="dropdown-item" href="">My Details</a></li>
+									<li><a class="dropdown-item" href="{% url 'order_history' %}">Order History</a></li>
+									<li><a class="dropdown-item" href="{% url 'user_membership' %}">My Membership</a></li>
+									<li><a class="dropdown-item" href="{% url 'profile' %}">My Details</a></li>
 									<li><a class="dropdown-item" href="{% url 'account_logout' %}">Log Out</a></li>
 								{% else %}
 									<li><a class="dropdown-item" href="{% url 'memberships' %}">Register</a></li>
@@ -159,7 +157,7 @@
 		</nav>
 		<div class="large-nav collapse collapsed-search fixed-top" id="searchCollapse">
 			<div class="card card-body border-0 rounded-0 search-nav">
-				<form method="GET" action="" class="d-flex mx-auto">
+				<form method="GET" action="{% url 'products' %}" class="d-flex mx-auto">
 					<input class="form-control form-control-sm me-2 rounded-0" type="search" placeholder="Search" aria-label="Search" name="search">
 					<button class="btn btn-outline-dark btn-sm rounded-0" type="submit">Search</button>
 				</form>
@@ -167,11 +165,21 @@
     </div>
   </header>
   {% if messages %}
-  <div class="message-container"></div>
-  {% endif %}
-
-  {% block page_header %}
-  {% endblock %}
+		{% include 'includes/toasts/toast_setup.html' %}
+		<div class="message-container">
+			{% for msg in messages %}
+				{% with msg.level as level %}
+					{% if level == 40 %}
+						{% include 'includes/toasts/toast_error.html' %}
+					{% elif level == 25 %}
+						{% include 'includes/toasts/toast_success.html' %}
+					{% else %}
+						{% include 'includes/toasts/toast_info.html' %}
+					{% endif %}
+				{% endwith %}
+			{% endfor %}
+		</div>
+	{% endif %}
 
   <main class="flex-shrink-0">
 		{% block content %}
@@ -209,6 +217,15 @@
   {% endblock %}
   
   {% block extrapostloadjs %}
+  <script>
+	var toastElList = [].slice.call(document.querySelectorAll('.toast'))
+	var toastList = toastElList.map(function(toastEl) {
+		return new bootstrap.Toast(toastEl,{
+			delay: 90000
+		})
+		});
+	toastList.forEach(toast => toast.show());
+</script>
   {% endblock %}
 
 
