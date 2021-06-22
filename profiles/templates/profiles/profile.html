@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+
+{% block main_nav_home %}
+    active
+{% endblock %}
+{% block add_title %}Profile{% endblock %}
+
+{% block content%}
+<div class="container text-center">
+    <h1 class="my-5 font-heading">This is your profile <span class="heading-pink">{{ profile }}</span></h1>
+    <div class="row">
+        <div class="col-12 col-sm-8 col-md-6 col-xl-4 mx-auto border p-3 mb-5">
+            <h4 class="text-uppercase mb-3">Your Membership</h4>
+            {% if membership.name == 'Basic' %}
+                <p>'The {{ membership.name }} Prickly' - free</p>
+            {% else %}
+                <p>'The {{ membership.name }} Prickly' - € {{ membership.price }}/pm</p>
+            {% endif %}
+            <a href="{% url 'user_membership' %}" class="button button-pink">More</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 col-sm-8 col-md-6 col-xl-4 mx-auto border p-3 mb-5">
+            <h4 class="text-uppercase mb-3">Your Details</h4>
+            <div>
+                <form action="{% url 'profile' %}" method="POST">
+                    {% csrf_token %}
+                    {{ profile_form|crispy }}
+                    <button class="button button-pink">Save</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
