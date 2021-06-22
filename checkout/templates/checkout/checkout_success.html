@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block add_title %}Order Details{% endblock %}
+{% block content%}
+<!-- Order Confirmatiion -->
+<div class="container">
+    {% if order_details %}
+    <!-- Back Button in Order Detail page -->
+    <button class="button button-steel mt-3" onclick="history.back(-1)">
+        Back
+    </button>
+    <div class="text-center mb-5">
+        <!-- Order Nnumber -->
+        <h2 class="mb-5 mt-3 text-uppercase">Order #: {{ order.order_number }}</h2>
+        <div class="row">
+            <div class="col-12 col-sm-4">
+                <!-- Ordered date -->
+                <p class="mb-1 text-uppercase">Ordered</p>
+                <p><span class="clr-pink px-1">{{ order.order_date|date:"M d, Y" }}</span></p>
+            </div>
+            <div class="col-12 col-sm-4">
+                {% if order.dispatch_date %}
+                <!-- Dispatch or if date not there yet then estimated dispatch date -->
+                    <p class="mb-1 text-uppercase">Dispatched</p>
+                    <p><span class="clr-pink px-1">{{ order.dispatch_date|date:"M d, Y" }}</span></p>
+                {% else %}
+                    <p class="mb-1 text-uppercase">Estimated Dispatch</p>
+                    <p><span class="clr-pink px-1">{{ order.est_dispatch_dte|date:"M d, Y" }}</span></p>
+                {% endif %}
+            </div>
+            <div class="col-12 col-sm-4">
+                {% if order.delivery_date %}
+                    <!-- Delivery or if date not there yet then estimated delivery date -->
+                    <p class="mb-1 text-uppercase">Delivered</p>
+                    <p><span class="clr-pink px-1">{{ order.delivery_date|date:"M d, Y" }}</span></p>
+                {% else %}
+                    <p class="mb-1 text-uppercase">Estimated Delivery</p>
+                    <p><span class="clr-pink px-1">{{ order.est_deliery_dte|date:"M d, Y" }}</span></p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <!-- Back to shop button -->
+    <a href="{% url 'products' %}" class="button button-steel mt-3">
+        Back to the Shop
+    </a>
+    <div class="text-center mb-5 mt-3">
+        <h1 class="my-5 text-uppercase">You're Awesome</h1>
+        <p>
+            For your order <span class="fs-5">{{ order.order_number }}</span> you chose  some amazing items to add to your plant family.
+        </p>
+        <p>
+            Check your email ({{ order.email }}) for confirmation and don't be a stranger -
+            write a review, we would love to hear from you.
+        </p>
+    </div>
+    {% endif %}
+    <!-- Order Item Information -->
+    <div class="row mx-auto border px-0 py-3 p-sm-3 mb-5" style="max-width: 720px;">
+        <h4 class="text-uppercase">Items</h4>
+        {% for item in order.order_line.all %}
+            <div class="row text-center">
+                <!-- Item image -->
+                <div class="col-12 col-sm-4 col-md-3 test">
+                    {% if item.product.main_pic %}
+                        <div class="col text-sm-end">
+                            <img src="{{ item.product.main_pic.url }}" alt="An image of {{ item.product.name }}" style="height: 200px;">
+                            <!-- <span class="badge rounded-pill item-qty">{{ item.quantity }}</span> -->
+                        </div>
+                    {% else %}
+                        <div class="col text-sm-end">
+                            <img src="{{ MEDIA_URL }}step2.png" alt="An icon of a cactus" style="height: 150px;">
+                            <!-- <span class="badge rounded-pill item-qty">{{ item.quantity }}</span> -->
+                        </div>
+                    {% endif %}
+                </div>
+                <!-- Item details -->
+                <div class="col-9 col-sm-5 px-0 m-auto row">
+                    <div class="col-12">
+                        <p class="fw-bold text-uppercase mb-2">{{ item.product.name }}</p>
+                    </div>
+                    <div class="col-5">
+                        <p class="text-end"><small>€ {{ item.product.price }}</small></p>
+                    </div>
+                    <div class="col-4 text-start">
+                        <small>X{{ item.quantity }}</small>
+                    </div>
+                </div>
+                <div class="col-3 px-0 m-auto">
+                    <p class="fs-5">€ {{ item.line_total }}</p>
+                </div>
+            </div>
+        {% endfor %}
+        <hr>
+        <div class="col-12 text-center mb-3">
+            <!-- Display discount and subtotal striked out if disscount was applied -->
+            {% if discount > 0 %}
+                <p class="text-decoration-line-through text-muted">Subtotal: € {{ order.subtotal }}</p>
+                <p class="text-success">{{ discount }}% off </p>
+            {% else %}
+                <p>Subtotal: € {{ order.subtotal }}</p>
+            {% endif %}
+            <p>Delivery: € {{ order.delivery_cost }}</p>
+            <p class="fs-5">Total: € {{ order.total }}</p>
+        </div>
+    </div>
+
+    <!-- Personal and Shipping Information -->
+    <div class="row mx-auto border px-0 py-3 p-sm-3 mb-5" style="max-width: 720px;">
+        <!-- Shipping Address -->
+        <div class="col-12 col-sm-6">
+            <h4 class="text-uppercase">
+                Shipping Address
+            </h4>
+            <div class="mb-3">
+                <p class="mb-0">{{ order.address_line_1 }}</p>
+                <p class="mb-0">{{ order.address_line_2 }}</p>
+                <p class="mb-0">{{ order.city }}</p>
+                <p class="mb-0">{{ order.region }}</p>
+                <p class="mb-0">{{ order.country }}</p>
+                <p class="mb-0">{{ order.postcode }}</p>
+            </div>
+        </div>
+        <!-- Customer Details -->
+        <div class="col-12 col-sm-6">
+            <h4 class="text-uppercase">
+                Customer
+            </h4>
+            <div class="mb-3">
+                <p class="mb-0">{{ order.full_name }}</p>
+                <p class="mb-0">{{ order.email }}</p>
+                <p class="mb-0">{{ order.phone_number }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,12 @@
+Hey {{ order.first_name }},
+
+
+First of all, you're awesome!
+
+Your order {{ order.order_number }} has been confirmed and we'll deliver your new family member to you by {{ order.est_deliery_dte }}.
+
+You paid €{{ order.total }} and hopefully it's worth every penney :)
+
+
+Have a lovely day,
+Plant Parents
