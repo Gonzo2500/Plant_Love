@@ -1,4 +1,4 @@
-% extends "base.html" %}
+{% extends "base.html" %}
 {% load static %}
 
 {% block extra_title %}Product Details{% endblock %}
@@ -62,5 +62,6 @@
 {% endblock content %}
 
 {% block extrapostloadjs %}
+  {{ block.super }}
   <script src="{% static 'products/js/product_item.js' %}"></script>
 {% endblock %}
