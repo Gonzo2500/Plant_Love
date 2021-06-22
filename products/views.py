@@ -1,11 +1,12 @@
-from django.shortcuts import render
-
 # Create your views here.
 from django.shortcuts import render, get_object_or_404, reverse, redirect
 from django.conf import settings
 from django.contrib import messages
 from django.db.models import Q
 from .models import Product, Category, Color
+from reviews.models import Review
+from reviews.forms import ReviewForm
+from profiles.models import Profile
 
 
 def all_products(request):
