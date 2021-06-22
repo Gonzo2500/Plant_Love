@@ -158,6 +158,7 @@ body {
     background-color: var(--color-light-pink);
 }
 
+
 /* ---------- HEADER ---------- */
 
 header {
@@ -312,6 +313,41 @@ span.hamburger-inner {
     width: 33px;
     background-color: var(--color-main);
 }
+
+@media (min-width: 768px) {
+    nav.navbar {
+        height: 5rem;
+    }
+}
+
+/* Notyf Toasts */
+.notyf .notyf__message {
+    color: var(--color-main);
+}
+
+.notyf .notyf__toast {
+    top: 70px;
+}
+
+/* Bootstrap Toasts */
+.toast {
+    position: absolute;
+    right: 1rem;
+    background-color: #fff;
+    z-index: 9999;
+}
+
+.toast .remove-item{
+    font-size: 0.5rem;
+}
+
+@media (min-width: 576px) {
+    .toast {
+        width: 400px;
+    }
+}
+
+
 /* ---------- FOOTER ---------- */
 footer {
     line-height: 1.1;
@@ -355,3 +391,141 @@ footer .list-inline-item:hover {
     background-color: var(--color-light-pink);
 }
 
+
+
+/* ---------- SHOP ---------- */
+/* Toggle class for sort items to be visible on a button click */
+.sort-width {
+    display: none;
+}
+
+#sort-trigger {
+    cursor: pointer;
+}
+
+/* --------- ALLAUTH ---------- */
+
+.allauth {
+    padding-top: 2rem;
+    text-align: center;
+}
+
+.allauth h1 {
+    margin-bottom: 2rem;
+}
+
+.allauth .button {
+    text-transform: uppercase;
+}
+
+.allauth div.form-group {
+    text-align: left;
+}
+
+.allauth .form-group input {
+    background-color: #fff;
+    border: 1px solid var(--color-light-pink);
+    border-radius: 0;
+    margin-bottom: 1.5rem;
+    -webkit-box-shadow: 0 1px 3px 0 #e6ebf1;
+            box-shadow: 0 1px 3px 0 #e6ebf1;
+}
+
+.allauth .form-group label {
+    display: none;
+}
+
+.allauth .form-control:focus {
+    background-color: #fff;
+    border-color: var(--color-light-pink);
+    outline: 0;
+    -webkit-box-shadow: 0 0 0 0.25rem var(--color-light-pink);
+            box-shadow: 0 0 0 0.25rem var(--color-light-pink);
+}
+
+.allauth .form-group input::-webkit-input-placeholder {
+    color: #b4bfcb;
+    opacity: 1;
+}
+
+.allauth .form-group input::-moz-placeholder {
+    color: #b4bfcb;
+    opacity: 1;
+}
+
+.allauth .form-group input:-ms-input-placeholder {
+    color: #b4bfcb;
+    opacity: 1;
+}
+
+.allauth .form-group input::-ms-input-placeholder {
+    color: #b4bfcb;
+    opacity: 1;
+}
+
+.allauth .form-group input::placeholder {
+    color: #b4bfcb;
+    opacity: 1;
+}
+
+.allauth #div_id_remember, .allauth #div_id_remember label {
+    display: inline-block;
+}
+
+.socialaccount_providers li {
+    list-style: none;
+}
+
+ul.socialaccount_providers {
+    border: 1px solid var(--color-light-pink);
+    padding: 0.4rem;
+}
+
+.socialaccount_providers li a{
+    display: block;
+    text-decoration: none;
+    color: var(--color-main);
+}
+
+.socialaccount_providers li a:hover, ul.socialaccount_providers:hover {
+    background-color: var(--color-light-pink);
+}
+
+.socialaccount_provider.google {
+    background-image: url(/media/google-icon.svg);
+    background-clip: border-box;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+
+
+.allauth .form-check-input:checked {
+    background-color: #b3bcc9;
+    border-color: #b3bcc9;
+}
+
+/* ---------- 404 page --------- */
+
+.not-found-img {
+    max-width: 300px;
+}
+
+/* ---------- LOGO --------- */
+
+img.logo {
+    max-height: 3rem;
+}
+
+@media (max-width: 300px) {
+   img.logo {
+        max-height: 2rem;
+    }
+}
+
+/* ----------LANDING PAGE---------- */
+
+div.landing-text-container {
+    
+    background-color: #fcfbf9;
+}
