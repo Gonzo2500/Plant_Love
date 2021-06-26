@@ -65,7 +65,7 @@ class StripeWH_Handler:
 
         # Get Delivery Type instance
         delivery_type_value = shipping.carrier
-        delivery_type = DeliveryType.objects.get(id=delivery_type_value)
+        delivery_type = DeliveryType.objects.get(name=delivery_type_value)
 
         # convert total amount from an integer to a decimal number
         subtotal = round(intent.charges.data[0].amount / 100, 2)
@@ -77,12 +77,12 @@ class StripeWH_Handler:
                 shipping.address[field] = None
 
         # Add user details to user profile if user ticked 'save_details'
-        # however, checkout view failed
         profile = None
 
-        if request.user.is_authenticated:
-            profile = Profile.objects.get(user=request.user)
-            if save_details:
+        username = intent.metadata.username
+        if username != 'AnonymousUser':
+            profile = Profile.objects.get(user__username=username)
+            if save_info:
                 profile.user_phone_number = shipping.phone
                 profile.user_address_line_1 = shipping.address.line1
                 profile.user_address_line_2 = shipping.address.line2
