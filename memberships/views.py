@@ -163,8 +163,8 @@ def membership_update(request):
     # Asign correct price keys to the paid memberships
     if membership == 'Ultimate':
         price = settings.STRIPE_PRICE_ID_ULTIMATE
-    elif membership == 'Supreme':
-        price = settings.STRIPE_PRICE_ID_SUPREME
+    elif membership == 'Advanced':
+        price = settings.STRIPE_PRICE_ID_ADVANCED
     else:
         price = settings.STRIPE_PRICE_ID_BASIC
 
@@ -240,8 +240,8 @@ def create_checkout_session(request):
         # set stripe product price dependant on above
         if membership == 'Ultimate':
             price = settings.STRIPE_PRICE_ID_ULTIMATE
-        elif membership == 'Supreme':
-            price = settings.STRIPE_PRICE_ID_SUPREME
+        elif membership == 'Advanced':
+            price = settings.STRIPE_PRICE_ID_ADVANCED
         else:
             price = settings.STRIPE_PRICE_ID_BASIC
 
@@ -252,7 +252,7 @@ def create_checkout_session(request):
             checkout_session = stripe.checkout.Session.create(
                 client_reference_id=(request.user.id if
                                      request.user.is_authenticated else None),
-                # link to checkout success page if paymenr successful
+                # link to checkout success page if payment successful
                 success_url=(
                     domain_url + 'success?session_id={CHECKOUT_SESSION_ID}'),
                 #  Link to a page if user cancels the payment in checkout
