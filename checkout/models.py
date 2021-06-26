@@ -19,7 +19,7 @@ from profiles.models import Profile
 class DeliveryType(models.Model):
     """
     Creates Delivery Type Model containing specific
-    data on each specific dleivery type
+    data on each specific delivery type
     """
     name = models.CharField('Delivery Type', max_length=20)
     dispatch_speed = models.IntegerField('days to dispatch order')
