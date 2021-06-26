@@ -16,12 +16,12 @@
          <div class="row text-center">
              <!-- Item image -->
              {% if item.product.main_pic %}
-                 <div class="col-12 col-sm-6 col-md-3 row">
+                 <div class="col-12 col-sm-6 col-md-3">
                      <div class="col text-sm-end"><img src="{{ item.product.main_pic.url }}" alt="An image of {{ item.product.name }}" style="height: 200px;"></div>
                  </div>
              {% else %}
-                 <div class="col-12 col-sm-6 col-md-3 row">
-                     <div class="col text-sm-end"><img src="{{ MEDIA_URL }}step2.png"" alt="An icon of a cactus" style="height: 200px;"></div>
+                 <div class="col-12 col-sm-6 col-md-3">
+                     <div class="col text-sm-end"><img src="{{ MEDIA_URL }}love-plant.png" alt="heart shaped flower in a pot" style="height: 200px;"></div>
                  </div>
              {% endif %}
              <!-- Item details -->
