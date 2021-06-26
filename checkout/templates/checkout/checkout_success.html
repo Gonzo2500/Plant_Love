@@ -63,10 +63,10 @@
         {% for item in order.order_line.all %}
             <div class="row text-center">
                 <!-- Item image -->
-                <div class="col-12 col-sm-4 col-md-3 test">
+                <div class="col-12 col-sm-4">
                     {% if item.product.main_pic %}
                         <div class="col text-sm-end">
-                            <img src="{{ item.product.main_pic.url }}" alt="An image of {{ item.product.name }}" style="height: 200px;">
+                            <img src="{{ item.product.main_pic.url }}" alt="An image of {{ item.product.name }}" style="height: 200px; width: 240px;">
                             <!-- <span class="badge rounded-pill item-qty">{{ item.quantity }}</span> -->
                         </div>
                     {% else %}
