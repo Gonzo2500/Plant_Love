@@ -29,7 +29,7 @@ class Membership(models.Model):
     ]
 
     name = models.CharField(max_length=50)
-    pic = models.ImageField('Membership Picture', null=True, blank=True)
+    pic = models.ImageField('Membership Picture', default="", blank=True)
     free_delivery = models.CharField(max_length=1,
                                      choices=FREE_DELIVERY,
                                      default='N')
@@ -39,7 +39,7 @@ class Membership(models.Model):
                                 choices=PRIORITY,
                                 help_text=('Priority of announcements'))
     q_gift = models.CharField('Quarterly Gift', max_length=50,
-                              null=True, blank=True)
+                              default="", blank=True)
     price = models.DecimalField(max_digits=4, decimal_places=2)
 
     def __str__(self):

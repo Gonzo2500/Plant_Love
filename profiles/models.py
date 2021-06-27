@@ -15,26 +15,26 @@ class Profile(models.Model):
     """
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     membership = models.ForeignKey(Membership, on_delete=models.CASCADE,
-                                   null=True, blank=True)
+                                   default="", blank=True)
     user_phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$',
                                       message="Enter phone number in a format:"
                                       "'+111111111' and no longer that "
                                       "15 digits.")
     user_phone_number = models.CharField(validators=[user_phone_regex],
-                                         max_length=16, null=True,
+                                         max_length=16, default="",
                                          blank=True)
-    user_address_line_1 = models.CharField(max_length=100, null=True,
+    user_address_line_1 = models.CharField(max_length=100, default="",
                                            blank=True)
-    user_address_line_2 = models.CharField(max_length=100, null=True,
+    user_address_line_2 = models.CharField(max_length=100, default="",
                                            blank=True)
-    user_city = models.CharField('city or town', max_length=85, null=True,
+    user_city = models.CharField('city or town', max_length=85, default="",
                                  blank=True)
     user_region = models.CharField('region or county', max_length=85,
-                                   null=True, blank=True)
+                                   default="", blank=True)
     user_country = CountryField(blank_label='Country',
-                                null=True, blank=True)
+                                default="", blank=True)
     user_postcode = models.CharField('post/zip code', max_length=10,
-                                     null=True, blank=True)
+                                     default="", blank=True)
 
     def __str__(self):
         return self.user.username
