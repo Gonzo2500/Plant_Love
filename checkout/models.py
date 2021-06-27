@@ -43,7 +43,7 @@ class Order(models.Model):
     order_number = models.CharField(max_length=36, default=uuid.uuid4,
                                     editable=False)
     user_profile = models.ForeignKey(Profile, on_delete=models.SET_NULL,
-                                     default="", blank=True,
+                                     null=True, blank=True,
                                      related_name='user_orders')
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
@@ -57,22 +57,22 @@ class Order(models.Model):
                                     default=0)
     email = models.EmailField(max_length=254)
     address_line_1 = models.CharField(max_length=100,)
-    address_line_2 = models.CharField(max_length=100, default="", blank=True)
+    address_line_2 = models.CharField(max_length=100, null=True, blank=True)
     city = models.CharField('city or town', max_length=85)
-    region = models.CharField('region or county', max_length=85, default="",
+    region = models.CharField('region or county', max_length=85, null=True,
                               blank=True)
     country = CountryField(blank_label='Country *')
     postcode = models.CharField('post/zip code', max_length=10)
     order_date = models.DateTimeField(auto_now_add=True)
     dispatch_date = models.DateTimeField('order dispatched on',
-                                         default="", blank=True)
+                                         null=True, blank=True)
     est_dispatch_dte = models.DateTimeField('estimated order dispatch date',
-                                            editable=False, default="",
+                                            editable=False, null=True,
                                             blank=True)
     delivery_date = models.DateTimeField('order delivered on',
-                                         default="", blank=True)
+                                         null=True, blank=True)
     est_deliery_dte = models.DateTimeField('estimated order delivery date',
-                                           editable=False, default="",
+                                           editable=False, null=True,
                                            blank=True)
     delivery_type = models.ForeignKey(DeliveryType, on_delete=models.CASCADE)
     delivery_cost = models.DecimalField(max_digits=7, decimal_places=2,
@@ -156,7 +156,7 @@ class OrderLine(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE,
                               related_name='order_line')
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    color = models.CharField(max_length=20, default="", blank=True)
+    color = models.CharField(max_length=20, null=True, blank=True)
     quantity = models.IntegerField(default=0)
     line_total = models.DecimalField(max_digits=7, decimal_places=2,
                                      default=0, editable=False)

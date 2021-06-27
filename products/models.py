@@ -44,16 +44,16 @@ class Product(models.Model):
     description = models.TextField()
     avg_rating = models.DecimalField('average product rating', max_digits=2,
                                      decimal_places=1, default=0,
-                                     default="", blank=True)
+                                     null=True, blank=True)
     price = models.DecimalField(max_digits=5, decimal_places=2)
     many_colors = models.CharField(max_length=1,
                                    choices=MANY_COLORS,
                                    help_text=('Will the product come in '
                                               'multiple colors?'))
-    main_pic = models.ImageField('thumbnail picture', default="", blank=True)
-    pic2 = models.ImageField('additional picture 2', default="", blank=True)
-    pic3 = models.ImageField('additional picture 3', default="", blank=True)
-    pic4 = models.ImageField('additional picture 4', default="", blank=True)
+    main_pic = models.ImageField('thumbnail picture', null=True, blank=True)
+    pic2 = models.ImageField('additional picture 2', null=True, blank=True)
+    pic3 = models.ImageField('additional picture 3', null=True, blank=True)
+    pic4 = models.ImageField('additional picture 4', null=True, blank=True)
     added_date = models.DateTimeField(auto_now_add=True)
     release_date = models.DateTimeField('product release date',
                                         help_text=('Select today/now as the '
@@ -107,7 +107,7 @@ class Color(models.Model):
     name = models.CharField(max_length=20)
     color_hex = ColorField(default='#FFFFFF')
     product = models.ForeignKey(Product, on_delete=models.CASCADE,
-                                default="", blank=True)
+                                null=True, blank=True)
 
     def __str__(self):
         return self.name
