@@ -2,7 +2,6 @@
 .shop-button {
     height: 4rem;
     width: 4rem;
-    background-image: url(/media/cacti-btn.png);
     background-size: cover;
     color: var(--color-light-pink);
     font-family: var(--font-headings);
