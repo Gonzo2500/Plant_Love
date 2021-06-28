@@ -73,9 +73,9 @@
                 <div class="card my-3 mx-auto rounded-0 text-center" style="max-width: 300px;">
                     <a href="{% url 'product_item' product.pk %}">
                         {% if product.main_pic %}
-                            <img class="img-fluid" src="{{ product.main_pic.url }}" alt="An image of a {{ product.name }}">
+                            <img class="img-fluid" src="{{ product.main_pic.url }}" alt="An image of a {{ product.name }}" style="max-height: 230px;">
                         {% else %}
-                            <img class="img-fluid" src="" alt="">
+                            <img class="img-fluid" src="{{ MEDIA_URL }}love-plant.png" alt="a heart shaped flower">
                         {% endif %}
                     </a>
                     <div class="card-body text-center">
