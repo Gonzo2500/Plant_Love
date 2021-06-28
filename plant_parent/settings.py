@@ -28,7 +28,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', '')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = 'DEVELOPMENT' in os.environ
 
-ALLOWED_HOSTS = ['plant-love.herokuapp.com','localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['plant-love.herokuapp.com', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -248,7 +248,7 @@ STRIPE_PRICE_ID_ADVANCED = os.getenv('STRIPE_PRICE_ID_ADVANCED', '')
 STRIPE_PRICE_ID_ULTIMATE = os.getenv('STRIPE_PRICE_ID_ULTIMATE', '')
 DOMAIN_URL = os.getenv('DOMAIN_URL', '')
 
- # Display e-mails in terminal during development
+# Display e-mails in terminal during development
 if 'DEVELOPMENT' in os.environ:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
     DEFAULT_FROM_EMAIL = 'plantparent@example.com'
