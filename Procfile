@@ -1,1 +1,1 @@
-web: gunicorn plant_parent.wsgi:applicationhe
+web: gunicorn plant_parent.wsgi:application
