@@ -2,6 +2,8 @@
 const stripePublicKey = document.querySelector('#id_stripe_public_key').text.slice(1, -1);
 const clientSecret = document.querySelector('#id_client_secret').text.slice(1, -1);
 const stripe = Stripe(stripePublicKey);
+console.log(`Stripe public key: ${stripePublicKey}`);
+console.log(`Stripe: ${stripe}`);
 const elements = stripe.elements();
 const style = {
     base: {
