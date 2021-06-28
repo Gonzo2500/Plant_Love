@@ -254,7 +254,7 @@ def create_checkout_session(request):
                                      request.user.is_authenticated else None),
                 # link to checkout success page if payment successful
                 success_url=(
-                    domain_url + 'success?session_id={CHECKOUT_SESSION_ID}'),
+                    domain_url + 'memberships/success?session_id={CHECKOUT_SESSION_ID}'),
                 #  Link to a page if user cancels the payment in checkout
                 cancel_url=domain_url + 'membership_checkout/',
                 # Define payment method to be a card
