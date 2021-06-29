@@ -285,7 +285,7 @@ Features worth doing
 # Information Architecture
 
 ## Database
-- The databse used for this project was **[PostgresSQL](https://www.postgresql.org/)** for deployed project anf **[SQLite]()https://www.sqlite.org/index.html** on the local machin in development
+- The databse used for this project was **[PostgresSQL](https://www.postgresql.org/)** for deployed project and **[SQLite]()https://www.sqlite.org/index.html** on the local machine in development
 
 ## Structure
 - The data consists of 10 models accross 7 apps
@@ -541,4 +541,198 @@ Instructions to run the project on your local device using an IDE
 
 1. Website should be available on a link similar to `http://127.0.0.1:8000`. (check your IDE terminal)
 1. Note: `python3` and `pip3` commands can vary depending on version/machine/IDE you're using. Always check docs if unsure.
+
+## Remote
+### Pre-requisites
+- Set up [Heroku](https://dashboard.heroku.com/apps) Account and app
+        <details>
+            <summary>Heroku Basic Set Up</summary>
+            <ul>
+                <li>Register to the Heroku website by clicking on this [sign up link(https://signup.heroku.com/login)]</li>
+                <li>Create a new app on the Heroku website, enter a unique name and choose a region closest to you.
+                </li>
+            </ul>
+        </details>
+- Create AWS account and upload static files used in the project
+        <details>
+            <summary>AWS S3 static file storage setup</summary>
+            <ul>
+                <li>Go to [aws.amazon.com](https://aws.amazon.com/) website and Register, you might have to enter your credit card details, however, while using free tier there should be no charges. That being said, you should monitor your own usage.</li>
+                <li>After registration, go back to the [AWS](https://aws.amazon.com/) site and click the orange 'sign in to the Console' button.</li>
+                <li>Sign in as 'Root User' with your e-mail address and password used in registration.</li>
+                <li>At the top of the site, search for S3 and click on it to open.</li>
+                <li>Click on the **Create bucket** button located on the top right.
+                </li>
+                <li>Name should match the Heroku app name, Region is set to the closest tot you, untick the 'Block all public access' and tick the acknowledgement next to the warning symbol.</li>
+                <li>Go to the end and click **Create Bucket**</li>
+                <li>To Enable static website hosting
+                    <ul>
+                        <li>Select the bucket by clicking on it and go to **Properties** located at the top.</li>
+                        <li>Scroll down to the very bottom and click on 'Edit' under **Static website hosting**.</li>
+                        <li>Select 'Enable' and enter the default values for Index document and Error document as these won't be used.
+                        </li>
+                        <li>Click **Save changes**</li>
+                    </ul>
+                </li>
+                <li>Make changes in Permissions
+                    <ul>
+                        <li>Go to **Permissions** located at the top</li>
+                        <li>Scroll down and click 'Edit' under **Cross-origin resource sharing (CORS)** which will provide access between Heroku and the bucket</li>
+                        <li>Scroll down to the very bottom and click on 'Edit' under **Static website hosting**.</li>
+                        <li>Add the following JSON code (indent it properly) and save changes.
+                            <pre>
+                                [
+                                    {
+                                        "AllowedHeaders": [
+                                            "Authorization"
+                                        ],
+                                        "AllowedMethods": [
+                                            "GET"
+                                        ],
+                                        "AllowedOrigins": [
+                                            "*"
+                                        ],
+                                        "ExposeHeaders": []
+                                    }
+                                ]
+                            </pre>
+                        </li>
+                        <li>Click 'Edit' under **bucket policy** and click on 'Policy Generator' which will open in a new tab.</li>
+                        <li>'Select Type or Policy' set to 'S3 Bucket Policy', 'Principal' set to '*', under 'Actions' add 'GetObject, GetObjectAcl, PutObject, PutObjectAcl, DeleteObject'</li>
+                        <li>Go back to the previous tab and copy the **Bucket ARN** and paste it under **Amazon Resource Name (ARN)**
+                        </li>
+                        <li>Click 'Add Statement' and then click 'Generate Policy'.</li>
+                        <li>Copy the code, paste it in the **bucket policy** field (previous tab) and add `/*` after the ARN to allow all resources in the bucket</li>
+                        <li>Click 'Save Changes'.</li>
+                        <li>Still in permissions click 'Edit' under **Access control list (ACL)**</li>
+                        <li>Under 'Everyone', tick 'List'</li>
+                        <li>Tick 'I understand the effects....' and Save changes.</li>
+                    </ul>
+                </li>
+                <li>At the top search for **IAM** and click on it.</li>
+                <li> Create a Group
+                    <ul>
+                        <li>On the left hand side, under 'Access management' click on **Groups**
+                        </li>
+                        <li>On the top right click 'Create New Group' and name it something that makes sense to you.</li>
+                        <li>Click 'Next Step' and then 'Create Group' (skips the policy for now, we will create it in one of the following steps).</li>
+                    </ul>
+                </li>
+                <li> Create a Policy
+                    <ul>
+                        <li>On the left hand side, under 'Access management' click on **Policies**.</li>
+                        <li>On the top right click 'Create policy' select JSON and click on 'Import Managed Policy'.
+                        </li>
+                        <li>Search for 'S3', select **AmazonS3FullAccess** and click 'Import'.</li>
+                        <li>Since we only want full access to our Bucket, go back to copy your ARN from before and add it under 'Resource' twice, the second time with `/*` after the ARN.
+                        </li>
+                        <li>Click on 'Review policy', add name and description and 'Create policy'.</li>
+                    </ul>
+                </li>
+                <li> Attach the Policy to the Group created
+                    <ul>
+                        <li>Go to **Groups** on the left hand side.</li>
+                        <li>Click on the relevant group and click on 'Attach Policy'.</li>
+                        <li>Search for the policy just created, select it and click 'Attach Policy'.</li>
+                    </ul>
+                </li>
+                <li> Create Users to put in the Group
+                    <ul>
+                        <li>Click on **Users** on the left hand side adn click 'Add user'.</li>
+                        <li>Add name and tick to give 'Programmatic access', then click 'Next: Permissions'.</li>
+                        <li>Select the group to put the user in and keep clicking 'Next; until the very end and click 'Create user'.</li>
+                        <li>Click on 'Download .csv' file, this is important as you won't have access to it again!</li>
+                        <li>Use the values from this file to later set your     `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` variables. </li>
+                    </ul>
+                </li>
+        </details>
+
+
+### Steps
+1. In Heroku, go to **Resources** and search for **Heroku Postgres**, we will use this as our development database
+    - Select 'Hobby Dev - Free' and click to Submit Order Form
+
+1. Comment out the 'SQLite and Postgres databases' section in the `settings.py` file and uncomment 'Postgres Database' section. Add your `DATABASE_URL` link obtained from Heroku Config Vars
+
+        DATABASES = {
+            'default': dj_database_url.parse('your-url-goes-here')
+        }
+1. Migrate your models to Postgres SQL database
+
+        python3 manage.py migrate
+
+1. If you have a JSON file with products displayed on the site, import them now in this order
+
+        python3 manage.py loaddata categories
+        python3 manage.py loaddata products
+
+1. Create a superuser that will be used to access the admin page as well as to manage the database. Enter username, password, and e-mail as required
+
+        python3 manage.py createsuperuser
+
+1. In `settings.py` delete the 'Postgres SQL Database' section (make sure you don't commit your DATABASE_URL link!) and un-comment 'SQLite and Postgres SQL Databases' section - this will allow for use of  either of the databases interchangeably
+
+1. Freeze dependencies in a  requirements.txt file (if it hasn't been created/updated before)
+
+        pip3 freeze --local > requirements.txt
+
+1. Create a Procfile that tells Heroku to create a web dyno and add the following line in it, where `the-name-of-your-app` is the name of your django project
+
+        web: gunicorn the-name-of-your-app.wsgi:application
+
+1. `Add`, `commit` and `push` your changes up to GitHub
+
+1. Go to Heroku and add all of the following environmental variables (Settings > Reveal Config Vars)
+
+    | Key | Value |
+    --- | ---
+    AWS_ACCESS_KEY_ID | `<your_aws_access__key>`
+    AWS_SECRET_ACCESS_KEY | `<your_aws_secret_access_key>`
+    DATABASE_URL | `generated automatically`
+    EMAIL_HOST_PASS | `<your_email_key>`
+    EMAIL_HOST_USER | `<your_email>`
+    SECRET_KEY | `<your_secret_key>`
+    STRIPE_PUBLIC_KEY | `<your_stripe_public_key>`
+    STRIPE_SECRET_KEY | `<your_stripe_secret_key>`
+    STRIPE_WH_SECRET_CH | `<your_stripe_webhook_key>`
+    STRIPE_WH_SECRET_SUB | `<your_stripe_webhook_key>`
+    USE_AWS | `True`
+    ALLOWED_HOSTS | `<your-heroku-app-url>`
+    
+1. In Heroku go to **Deploy** that's located at the top of the site
+
+
+1. Click on the **GitHub** option and connect your GitHub account as well as your repo from GitHub (search for the repo name)
+
+
+1. Click on **Enable Automatic Deploys** and then **Deploy Branch**, you should see a successful build here
+
+
+1. Open your app
+
+
+1. You should see `static/` folder with your static files in it in you S3 bucket.
+
+1. In your S3 bucket, add `media/` folder.
+
+1. If you didn't use JSON filer for product import, now is a good time to navigate to `your-ulr/admin/` page and add the Products and Categories in.
+
+1. Your app should be deployed and you should be able to see your added products.
+
+### Code :floppy_disk:
+- Collapsible sections in README.md seen on [GitHub Gist](https://gist.github.com/pierrejoubert73/902cc94d79424356a8d20be2b382e1ab) post done by pierrejoubert73
+- CSS Prefixed by [Autoprefixer CSS online](https://autoprefixer.github.io/)
+- [django-colorfield](https://pypi.org/project/django-colorfield/) - Used for color picker in Products.Color model
+- [Notyf](https://github.com/caroso1222/notyf) for toasts
+- Hamburger animation taken from [jonsuh.com](https://jonsuh.com/hamburgers/)
+- stripe subscription model was modified to fit this project but originally taken from these sources:
+    - [testdriven](https://testdriven.io/blog/django-stripe-subscriptions/)
+    - [stripe](https://stripe.com/docs/billing/subscriptions/checkout)
+
+### Media :clapper:
+-[GIF](https://icons8.com/preloaders/) for loader page
+- all images taken from [unspalsh](https://unsplash.com/) 
+- all plant icons taken from [flaticon](https://www.flaticon.com/)
+
+
 
