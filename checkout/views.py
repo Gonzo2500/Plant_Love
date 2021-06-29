@@ -165,6 +165,7 @@ def checkout(request):
 
 
 def delivery(request):
+    stripe_public_key = settings.STRIPE_PUBLIC_KEY
     """
     Update delivery type and pass it on to checkout
     """
@@ -177,8 +178,9 @@ def delivery(request):
 
     order_form = OrderForm()
     template = 'checkout/checkout.html'
-    context = {
+    context = { 
         'order_form': order_form,
+        'stripe_public_key': stripe_public_key,
     }
     return render(request, template, context)
 
