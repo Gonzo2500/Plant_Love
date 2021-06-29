@@ -250,5 +250,7 @@
 <!-- Add these values as id on an element so that JS can pick it up and use it in an external script -->
 {{ stripe_public_key|json_script:"id_stripe_public_key" }}
 {{ client_secret|json_script:"id_client_secret" }}
+{% if 'delivery' not in request.get_full_path %}
 <script src="{% static 'checkout/js/stripe.js' %}"></script>
+{% endif %}
 {% endblock %}
